@@ -1,0 +1,38 @@
+<html>
+{{template "header" .}}
+    <div class="body container well" >
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><a id="{{.Title}}" href="/edit/{{.Title}}">Edit</a></h3>
+                    </div>
+                    <div class="panel-body">
+                        {{printf "%s" .Body}}
+                    </div>
+                </div>
+            </div><!-- /.col-sm-4 -->
+            <div class="col-sm-4">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Panel title</h3>
+                    </div>
+                    <div class="panel-body">
+                        Panel content
+                    </div>
+                </div>
+            </div><!-- /.col-sm-4 -->
+            <div class="col-sm-4">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Panel title</h3>
+                    </div>
+                    <div class="panel-body">
+                        Panel content
+                    </div>
+                </div>
+            </div><!-- /.col-sm-4 -->
+        </div>
+    </div>
+{{template "editModal" .}}
+</html>

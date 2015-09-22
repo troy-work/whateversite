@@ -1,0 +1,49 @@
+{{define "editModal"}}
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close closeModal" data-dismiss="editModal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">Editing {{.Title}}</h4>
+            </div>
+            <div class="modal-body">
+                <form id="modalForm" action="/save/{{.Title}}" method="POST">
+                    <div class="form-group">
+                        <label for="body" class="control-label">{{.Title}}:</label>
+                        <textarea id="body" class="form-control" name="body" rows="5">{{printf "%s" .Body}}</textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default closeModal" data-dismiss="editModal">Close</button>
+                <button id="saveModal" type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+   $(function(){
+        $('#{{.Title}}').on('click', function(e){
+            e.preventDefault();
+            $('#editModal').modal('toggle');
+        });
+        $('.closeModal').on('click', function(){
+            $('#editModal').modal('toggle');
+        });
+
+        $('#saveModal').on('click', function(){
+            $('#modalForm').submit();
+            $('#editModal').modal('toggle');
+        });
+
+        $('#editModal').on('show.bs.modal', function (event) {
+            var modal = $(this);
+            modal.find('.modal-title').text('Editing ' + {{.Title}});
+            //modal.find('.modal-body input').val(recipient)
+        });
+   });
+
+
+</script>
+{{end}}
