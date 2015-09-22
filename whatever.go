@@ -8,7 +8,7 @@ import (
 
 func redirHttps(w http.ResponseWriter, req *http.Request) {
 	log.Printf("redirecting to https")
-	http.Redirect(w, req, "https://localhost:8081"+req.RequestURI, http.StatusMovedPermanently)
+	http.Redirect(w, req, "https://localhost:1443"+req.RequestURI, http.StatusMovedPermanently)
 }
 
 
@@ -19,7 +19,7 @@ func main() {
 	http.HandleFunc("/edit/", MakeHandler(EditHandler))
 	http.HandleFunc("/save/", MakeHandler(SaveHandler))
 
-	err := http.ListenAndServeTLS(":8081", "cert/server.pem", "cert/server.key", nil)
+	err := http.ListenAndServeTLS(":1443", "cert/server.pem", "cert/server.key", nil)
 	if (err != nil){
 		log.Fatal("ListenAndServe", err)
 	}
