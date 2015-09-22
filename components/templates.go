@@ -1,4 +1,4 @@
-package helpers
+package components
 import (
 	"net/http"
 	"html/template"
