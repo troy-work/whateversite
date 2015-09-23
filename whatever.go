@@ -19,10 +19,13 @@ func main() {
 	http.HandleFunc("/edit/", MakeHandler(EditHandler))
 	http.HandleFunc("/save/", MakeHandler(SaveHandler))
 
-	err := http.ListenAndServeTLS(":1443", "cert/server.pem", "cert/server.key", nil)
-	if (err != nil){
-		log.Fatal("ListenAndServe", err)
-	}
+	go func(){
+		err := http.ListenAndServeTLS(":1443", "cert/server.pem", "cert/server.key", nil)
+		if (err != nil){
+			log.Fatal("ListenAndServe", err)
+		}
+	}()
+
 	http.ListenAndServe(":8080", http.HandlerFunc(redirHttps))
 
 }
