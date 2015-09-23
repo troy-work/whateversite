@@ -1,6 +1,8 @@
 # whateversite
 golang metro bootstrap templates https responsive
 
+Please don't start a server like I did. I'm a noob with go. The ListenAndServe. . .can't be shut down. I'll fix this shortly. . . 
+
 This redirects http to https, so you'll have to permit the included unverified self-signed certs to run locally.
 Obviously you need to replace these with your own verified certs to use it in production. 
 
