@@ -5,7 +5,6 @@ import (
 	. "github.com/troy-work/whateversite/components"
 	. "gopkg.in/tylerb/graceful.v1"
 	"log"
-	"time"
 )
 
 func redirectHttps(w http.ResponseWriter, req *http.Request) {
@@ -16,32 +15,32 @@ func redirectHttps(w http.ResponseWriter, req *http.Request) {
 
 func main() {
 
-	mux := http.NewServeMux()
+	go func() {
+		mux := http.NewServeMux()
 
-	mux.HandleFunc("/", DefaultHandler)
-	mux.HandleFunc("/view/", MakeHandler(ViewHandler))
-	mux.HandleFunc("/edit/", MakeHandler(EditHandler))
-	mux.HandleFunc("/save/", MakeHandler(SaveHandler))
+		mux.HandleFunc("/", DefaultHandler)
+		mux.HandleFunc("/view/", MakeHandler(ViewHandler))
+		mux.HandleFunc("/edit/", MakeHandler(EditHandler))
+		mux.HandleFunc("/save/", MakeHandler(SaveHandler))
 
-	srvTls :=  &http.Server{
-		Addr: ":1443",
-		Handler: mux,
+		srvTls := &Server{
+			Timeout: 1,
+			Server:  &http.Server{Addr: ":1443", Handler: mux},
+		}
+		err := srvTls.ListenAndServeTLS("cert/server.pem", "cert/server.key")
+
+		if (err != nil) {
+			log.Fatal("Tls", err)
+		}
+	}()
+
+	srv := &Server{
+		Timeout: 1,
+		Server:  &http.Server{Addr: ":8080", Handler: http.HandlerFunc(redirectHttps)},
 	}
-
-	err := ListenAndServeTLS(srvTls, "cert/server.pem", "cert/server.key", time.Second)
+	err := srv.ListenAndServe()
 	if (err != nil){
-		log.Fatal("ListenAndServe", err)
+		log.Fatal("http", err)
 	}
-
-	mux2 := http.NewServeMux()
-	mux2.Handle("*",http.HandlerFunc(redirectHttps))
-
-	srv :=  &http.Server{
-		Addr: ":1443",
-		Handler: mux2,
-	}
-
-	//DON'T USE ListenAndServe like this. You can't shut it down
-	ListenAndServe(srv, time.Second)
 
 }
