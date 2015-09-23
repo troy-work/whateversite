@@ -27,10 +27,11 @@ func main() {
 			Timeout: 1,
 			Server:  &http.Server{Addr: ":1443", Handler: mux},
 		}
+		log.Printf("Starting https listener")
 		err := srvTls.ListenAndServeTLS("cert/server.pem", "cert/server.key")
 
 		if (err != nil) {
-			log.Fatal("Tls", err)
+			log.Fatal("Tls ", err)
 		}
 	}()
 
@@ -38,9 +39,10 @@ func main() {
 		Timeout: 1,
 		Server:  &http.Server{Addr: ":8080", Handler: http.HandlerFunc(redirectHttps)},
 	}
+	log.Printf("Starting http server")
 	err := srv.ListenAndServe()
 	if (err != nil){
-		log.Fatal("http", err)
+		log.Fatal("http ", err)
 	}
 
 }
